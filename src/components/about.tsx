@@ -15,7 +15,7 @@ export function About() {
   const [lead, ...rest] = about;
 
   return (
-    <section className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+    <section className="mx-auto max-w-6xl px-5 py-20 sm:px-6 md:py-28">
       <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16">
         <div>
           <RevealHeading text="Ten years in, still writing the code." />
@@ -32,18 +32,20 @@ export function About() {
         </div>
       </div>
 
-      <dl className="mt-16 grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <ul className="mt-16 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {facts.map((f, i) => (
-          <FadeIn key={f.label} delay={i * 0.08}>
-            <SpotlightCard className="flex h-full flex-col-reverse justify-end gap-2 p-6">
-              <dt className="text-sm text-muted-foreground">{f.label}</dt>
-              <dd className="text-brand font-display text-6xl leading-none font-semibold tracking-tight md:text-7xl">
-                <CountUp to={f.to} />
-              </dd>
-            </SpotlightCard>
-          </FadeIn>
+          <li key={f.label} className="flex">
+            <FadeIn delay={i * 0.08} className="flex w-full">
+              <SpotlightCard className="flex w-full flex-col gap-2 p-5 sm:p-6">
+                <p className="text-brand font-display text-5xl leading-none font-semibold tracking-tight sm:text-6xl md:text-7xl">
+                  <CountUp to={f.to} />
+                </p>
+                <p className="text-sm text-muted-foreground">{f.label}</p>
+              </SpotlightCard>
+            </FadeIn>
+          </li>
         ))}
-      </dl>
+      </ul>
     </section>
   );
 }

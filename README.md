@@ -1,6 +1,6 @@
 # Suresh B profile site
 
-Personal profile page built with Next.js 16 (App Router), Tailwind CSS 4, shadcn/ui components and Motion.
+Personal profile page built with Next.js 16 (App Router), Tailwind CSS 4 and shadcn/ui components, with CSS animation and Lenis smooth scrolling.
 
 ## Run it
 
@@ -28,18 +28,27 @@ to `out/`; preview it with `npx serve out`.
 
 To add more shadcn/ui components: `npx shadcn@latest add <name>`.
 
-## Motion
+## Motion and performance
 
-Built to stay smooth: only opacity and transform are animated, backgrounds are still, and nothing uses blur filters.
+Every animation is CSS (keyframes and transitions in `src/app/globals.css`), so
+the first screen is in the HTML and starts moving as soon as it paints, without
+waiting for JavaScript. Most components are server components; the only
+client-side JavaScript is Lenis smooth scrolling, one shared scroll observer and
+the card spotlight.
 
-- `smooth-scroll.tsx`: inertia scrolling with Lenis, so scroll-linked motion glides.
-- `fade-in.tsx`: the one entrance used everywhere (fade and rise, once).
-- `ride-visual.tsx`: the live ride animation in the Fiji Go card.
-- `reveal-heading.tsx`: section titles rise out of a mask.
-- `route-chart.tsx`: the route draws itself once, then one vehicle keeps running it.
-- `marquee.tsx`: the skills band, a pure CSS animation.
-- `spotlight-card.tsx`: glass card with a light under the pointer.
-- `experience.tsx`: the timeline line fills as you scroll, beside a sticky heading.
-- `count-up.tsx`: counting numbers.
+- `reveal-observer.tsx`: one IntersectionObserver for the whole page. It marks
+  `[data-reveal]` elements as shown (the CSS animates them) and counts the
+  numbers up.
+- `fade-in.tsx` and `reveal-heading.tsx`: the entrance used everywhere, and the
+  word-by-word heading reveal.
+- `in-view.tsx`: pauses looping animations while they are off screen.
+- `route-chart.tsx` and `ride-visual.tsx`: the hero route and the Fiji Go ride,
+  drawn and driven with CSS.
+- `experience.tsx`: the timeline line and the top progress bar are CSS
+  scroll-driven animations; in browsers without support they simply show full.
+- `smooth-scroll.tsx`: inertia scrolling with Lenis.
 
-Everything respects the operating system's reduced-motion setting.
+Hero text animates from 1% opacity rather than 0, so Chrome counts it as
+painted on the first frame. Fonts are self-hosted with `next/font/local`, Latin
+only, and preloaded. Everything respects the reduced-motion setting, and with
+JavaScript off all content is shown.

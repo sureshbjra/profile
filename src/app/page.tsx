@@ -1,5 +1,3 @@
-import { MotionConfig } from "motion/react";
-
 import { About } from "@/components/about";
 import { Contact } from "@/components/contact";
 import { Experience } from "@/components/experience";
@@ -11,7 +9,7 @@ import { Stack } from "@/components/stack";
 
 export default function Home() {
   return (
-    <MotionConfig reducedMotion="user">
+    <>
       <SiteHeader />
       <main id="top">
         <Hero />
@@ -22,6 +20,6 @@ export default function Home() {
         <Stack />
         <Contact />
       </main>
-    </MotionConfig>
+    </>
   );
 }

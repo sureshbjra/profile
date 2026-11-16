@@ -86,7 +86,7 @@ export function Projects() {
   const [feature, ...rest] = projects;
 
   return (
-    <section id="work" className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+    <section id="work" className="mx-auto max-w-6xl px-5 py-20 sm:px-6 md:py-28">
       <div className="max-w-2xl">
         <RevealHeading text="Work" />
         <FadeIn delay={0.1}>
@@ -101,7 +101,7 @@ export function Projects() {
         {/* Feature: full width, text beside a live ride */}
         <li className="flex md:col-span-2">
           <FadeIn className="flex w-full">
-            <SpotlightCard className="grid w-full gap-8 p-6 md:p-8 lg:grid-cols-[1fr_1.1fr] lg:gap-10">
+            <SpotlightCard className="grid w-full gap-8 p-5 sm:p-6 md:p-8 lg:grid-cols-[1fr_1.1fr] lg:gap-10">
               <div className="flex flex-col">
                 <Header p={feature} large />
                 <Points points={feature.points} />
@@ -115,7 +115,7 @@ export function Projects() {
         {rest.map((p, i) => (
           <li key={p.id} className="flex">
             <FadeIn delay={(i % 2) * 0.08} className="flex w-full">
-              <SpotlightCard className="flex w-full flex-col p-6 md:p-7">
+              <SpotlightCard className="flex w-full flex-col p-5 sm:p-6 md:p-7">
                 <Header p={p} />
                 <Points points={p.points.slice(0, 4)} />
                 <Stack items={p.stack} />

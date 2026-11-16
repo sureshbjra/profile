@@ -1,11 +1,6 @@
-"use client";
+import type { CSSProperties, ReactNode } from "react";
 
-import type { ReactNode } from "react";
-import { motion } from "motion/react";
-
-export const EASE = [0.16, 1, 0.3, 1] as const;
-
-/** One calm entrance, used everywhere: fade and rise, once. Only opacity and transform move. */
+/** One calm entrance, used everywhere: fade and rise, once, when scrolled into view. */
 export function FadeIn({
   children,
   className,
@@ -18,14 +13,12 @@ export function FadeIn({
   y?: number;
 }) {
   return (
-    <motion.div
+    <div
+      data-reveal=""
       className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-      transition={{ duration: 0.8, delay, ease: EASE }}
+      style={{ "--d": `${delay}s`, "--rise": `${y}px` } as CSSProperties}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

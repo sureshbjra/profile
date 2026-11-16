@@ -7,9 +7,9 @@ import { profile } from "@/lib/profile";
 
 export function Contact() {
   return (
-    <section id="contact" className="mx-auto max-w-6xl px-6 pb-16 md:pb-24">
+    <section id="contact" className="mx-auto max-w-6xl px-5 pb-16 sm:px-6 md:pb-24">
       <FadeIn y={40}>
-        <div className="glass relative overflow-hidden rounded-3xl px-6 py-16 text-center md:px-14 md:py-24">
+        <div className="glass relative overflow-hidden rounded-3xl px-5 py-14 text-center sm:px-6 sm:py-16 md:px-14 md:py-24">
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_70%_at_50%_0%,rgba(45,212,191,0.22),transparent_70%)]"
@@ -42,12 +42,12 @@ export function Contact() {
                 </a>
               </Button>
             </div>
-            <div className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+            <div className="mt-4 flex flex-wrap justify-center gap-x-2 text-sm">
               <a
                 href={profile.links.linkedin}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground"
+                className="inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground"
               >
                 LinkedIn
                 <ArrowUpRight className="size-3.5" aria-hidden />
@@ -56,7 +56,7 @@ export function Contact() {
                 href={profile.links.github}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground"
+                className="inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground"
               >
                 GitHub
                 <ArrowUpRight className="size-3.5" aria-hidden />
@@ -70,7 +70,7 @@ export function Contact() {
         <p>
           {profile.name}. {profile.role}.
         </p>
-        <p>Built with Next.js, Tailwind CSS, shadcn/ui and Motion.</p>
+        <p>Built with Next.js, Tailwind CSS and shadcn/ui.</p>
       </footer>
     </section>
   );

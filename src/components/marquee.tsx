@@ -17,7 +17,7 @@ function Row({ items, reverse }: { items: string[]; reverse?: boolean }) {
         {loop.map((item, i) => (
           <span
             key={i}
-            className="glass rounded-full px-5 py-2 font-display text-lg font-medium whitespace-nowrap text-foreground/85"
+            className="pill rounded-full px-5 py-2 font-display text-lg font-medium whitespace-nowrap text-foreground/85"
           >
             {item}
           </span>

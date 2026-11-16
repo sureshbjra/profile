@@ -2,6 +2,7 @@
 
 :root {
   --radius: 1rem;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Dark premium: near-black, white type, teal to sky glow, one amber signal */
   --background: #07080a;
@@ -44,9 +45,8 @@
   --color-violet: var(--violet);
   --color-signal: var(--signal);
 
-  --font-sans: "Instrument Sans Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Bricolage Grotesque Variable", ui-sans-serif, system-ui,
-    sans-serif;
+  --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
 
   --radius-sm: calc(var(--radius) - 6px);
   --radius-md: calc(var(--radius) - 4px);
@@ -135,6 +135,11 @@
     opacity: 1;
   }
 
+  .pill {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.045);
+  }
+
   .text-glow {
     background: linear-gradient(180deg, #ffffff 30%, rgba(255, 255, 255, 0.62));
     -webkit-background-clip: text;
@@ -162,9 +167,268 @@
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Motion
+   Every animation on the page is CSS, so the first screen moves the moment it
+   paints instead of waiting for JavaScript. Scroll reveals are switched on by
+   one shared observer (reveal-observer.tsx); without JavaScript everything is
+   simply shown. Only opacity and transform change, apart from the route lines
+   (stroke-dashoffset) and the moving vehicles (offset-distance).
+   --------------------------------------------------------------------------- */
+
+/* Entrances start at 1% opacity, not 0: visually the same, but Chrome then
+   counts the text as painted on the first frame, so the page is measured as
+   loaded when it actually appears (Largest Contentful Paint). */
+@keyframes rise {
+  from {
+    opacity: 0.01;
+    transform: translate3d(0, var(--rise, 20px), 0);
+  }
+}
+
+@keyframes word-up {
+  from {
+    opacity: 0.01;
+    transform: translate3d(0, 0.35em, 0);
+  }
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+@keyframes ping-ring {
+  from {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(var(--ping-scale, 3.2));
+  }
+}
+
+/* A trip takes 86% of the cycle; the rest is a short pause before the next. */
+@keyframes drive {
+  0% {
+    offset-distance: 0%;
+  }
+  86%,
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+@keyframes drive-fade {
+  0%,
+  86%,
+  100% {
+    opacity: 0;
+  }
+  6%,
+  80% {
+    opacity: 1;
+  }
+}
+
+@keyframes trip-bar {
+  0% {
+    transform: scaleX(0);
+  }
+  86%,
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes grow-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes drop-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -24px, 0);
+  }
+}
+
+@layer components {
+  .anim-rise {
+    animation: rise 0.8s var(--ease-out-expo) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  .anim-drop {
+    animation: drop-in 0.9s var(--ease-out-expo) both;
+  }
+
+  .anim-word {
+    display: inline-block;
+    animation: word-up 0.8s var(--ease-out-expo) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  /* Paths drawn this way need pathLength="1". */
+  .anim-draw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw var(--dur, 2.4s) ease-in-out forwards;
+    animation-delay: var(--d, 0s);
+  }
+
+  .anim-pop {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pop 0.5s var(--ease-out-expo) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  .anim-ping {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ping-ring var(--dur, 2.2s) ease-out infinite both;
+    animation-delay: var(--d, 0s);
+  }
+
+  .anim-drive {
+    animation:
+      drive var(--dur, 7s) ease-in-out infinite both,
+      drive-fade var(--dur, 7s) linear infinite both;
+    animation-delay: var(--d, 0s);
+  }
+
+  .anim-trip-bar {
+    transform-origin: left;
+    animation: trip-bar var(--dur, 7s) ease-in-out infinite both;
+    animation-delay: var(--d, 0s);
+  }
+
+  /* Loops pause while their panel is off screen (see in-view.tsx). */
+  .js [data-active="false"],
+  .js [data-active="false"] * {
+    animation-play-state: paused !important;
+  }
+
+  /* Scroll reveals: hidden only when JavaScript is there to show them. */
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, var(--rise, 28px), 0);
+    transition:
+      opacity 0.8s var(--ease-out-expo),
+      transform 0.8s var(--ease-out-expo);
+    transition-delay: var(--d, 0s);
+  }
+
+  .js [data-reveal][data-shown] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Headings: each word rises out of its own mask. */
+  .js [data-reveal-words] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .js [data-reveal-words] .word > span {
+    display: inline-block;
+    transform: translate3d(0, 105%, 0);
+    transition: transform 0.9s var(--ease-out-expo);
+    transition-delay: calc(var(--i, 0) * 50ms);
+  }
+
+  .js [data-reveal-words][data-shown] .word > span {
+    transform: none;
+  }
+
+  /* Timeline dots light up as they come into view. */
+  .route-dot {
+    border-color: rgba(255, 255, 255, 0.3);
+    background-color: var(--background);
+    transition:
+      background-color 0.4s ease,
+      border-color 0.4s ease,
+      box-shadow 0.4s ease;
+  }
+
+  .js [data-shown] > .route-dot,
+  html:not(.js) .route-dot {
+    border-color: var(--accent);
+    background-color: var(--accent);
+    box-shadow: 0 0 0 6px rgba(45, 212, 191, 0.16);
+  }
+
+  /* Scroll-linked progress: runs on the compositor where supported,
+     otherwise the timeline line is simply shown full and the bar hidden. */
+  .scroll-progress {
+    display: none;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      display: block;
+      transform-origin: left;
+      animation: grow-x linear both;
+      animation-timeline: scroll(root);
+    }
+
+    .route-line {
+      view-timeline-name: --route;
+    }
+
+    .route-fill {
+      transform-origin: top;
+      animation: grow-y linear both;
+      animation-timeline: --route;
+      animation-range: cover 30vh cover calc(100% - 60vh);
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee,
-  .animate-marquee-reverse {
-    animation: none;
+  .animate-marquee-reverse,
+  .anim-rise,
+  .anim-drop,
+  .anim-word,
+  .anim-pop,
+  .anim-ping,
+  .anim-drive,
+  .anim-trip-bar,
+  .scroll-progress {
+    animation: none !important;
+  }
+
+  .anim-draw {
+    animation: none !important;
+    stroke-dashoffset: 0;
+  }
+
+  .route-fill {
+    animation: none !important;
+  }
+
+  .js [data-reveal],
+  .js [data-reveal-words] .word > span {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
