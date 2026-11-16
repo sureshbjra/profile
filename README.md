@@ -11,6 +11,14 @@ npm run dev
 
 Then open http://localhost:3000. On Windows you can also double-click `start.bat`.
 
+## Live site
+
+https://sureshbjra.github.io/profile/
+
+Every push to `main` rebuilds and publishes the site through the workflow in
+`.github/workflows/deploy.yml`. `npm run build` writes a static copy of the site
+to `out/`; preview it with `npx serve out`.
+
 ## Where things are
 
 - `src/lib/profile.ts` holds all the text: intro, roles, projects, skills and links. Edit this file to change content.
