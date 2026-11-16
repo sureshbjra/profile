@@ -25,6 +25,7 @@ to `out/`; preview it with `npx serve out`.
 - `src/components/route-chart.tsx` is the animated route chart in the hero.
 - `src/components/ui/` holds the shadcn/ui components (button, badge, card).
 - `src/app/globals.css` holds the colour and font tokens.
+- Icons: `src/app/favicon.ico` (16, 32 and 48px; the 16px frame is a simplified drawing), `src/app/apple-icon.png` for iPhone home screens, `public/icons/` for the web manifest (`src/app/manifest.ts`). `public/icons/icon.svg` is the source artwork.
 
 To add more shadcn/ui components: `npx shadcn@latest add <name>`.
 
