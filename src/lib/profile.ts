@@ -205,6 +205,7 @@ export const projects: Project[] = [
       "Staff set each doctor's schedule and available slots",
       "Dashboard for viewing and managing appointments",
     ],
+    stack: ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS", "Motion", "PostgreSQL"],
   },
   {
     id: "pola-cabs",
