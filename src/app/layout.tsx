@@ -4,6 +4,8 @@ import "lenis/dist/lenis.css";
 import "./globals.css";
 
 import { RevealObserver } from "@/components/reveal-observer";
+import { profile } from "@/lib/profile";
+import { keywords, seoDescription, seoTitle, siteUrl } from "@/lib/seo";
 import { SmoothScroll } from "@/components/smooth-scroll";
 
 // Self-hosted, Latin only, preloaded, with a size-matched fallback so text
@@ -23,9 +25,30 @@ const sans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Suresh B | Technical team lead, full-stack and AI engineer",
-  description:
-    "Suresh B leads engineering at BarM8 and builds ride-hailing, GPS fleet tracking and booking platforms with Next.js, TypeScript, Node.js and AWS.",
+  // Only the domain: Next.js adds the /profile base path to image URLs itself.
+  metadataBase: new URL(new URL(siteUrl).origin),
+  title: seoTitle,
+  description: seoDescription,
+  keywords,
+  authors: [{ name: profile.name, url: siteUrl }],
+  creator: profile.name,
+  alternates: { canonical: siteUrl },
+  robots: { index: true, follow: true },
+  openGraph: {
+    type: "profile",
+    url: siteUrl,
+    siteName: profile.name,
+    title: seoTitle,
+    description: seoDescription,
+    locale: "en_US",
+    firstName: "Suresh",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: seoTitle,
+    description: seoDescription,
+  },
+  category: "technology",
 };
 
 export const viewport: Viewport = {

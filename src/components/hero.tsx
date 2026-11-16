@@ -40,7 +40,7 @@ export function Hero() {
             <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60 motion-reduce:hidden" />
             <span className="relative inline-flex size-2 rounded-full bg-accent" />
           </span>
-          Tech lead at BarM8, based in {profile.location}
+          {profile.name}, tech lead at BarM8 in {profile.location}
         </p>
 
         <h1

@@ -19,6 +19,16 @@ Every push to `main` rebuilds and publishes the site through the workflow in
 `.github/workflows/deploy.yml`. `npm run build` writes a static copy of the site
 to `out/`; preview it with `npx serve out`.
 
+## Search (SEO)
+
+- `src/lib/seo.ts` holds the page title, description, search keywords, the
+  live address and the structured data (schema.org Person and ProfilePage)
+  that tells Google this is your profile.
+- `src/app/opengraph-image.jpg` is the preview shown when the link is shared
+  on LinkedIn, WhatsApp or X.
+- `src/app/sitemap.ts` produces `/profile/sitemap.xml`. Submit it once in
+  Google Search Console.
+
 ## Where things are
 
 - `src/lib/profile.ts` holds all the text: intro, roles, projects, skills and links. Edit this file to change content.
